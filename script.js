@@ -314,6 +314,10 @@ function generatePdf(element) {
 
             var name = window['pokes' + chosenLang][nameId];
             var teraType = window['types' + chosenLang][teraTypeId];
+            if (teraType == undefined)
+            {
+                teraType = "None";
+            }
             var ability = window['abilities' + chosenLang][abilityId];
             var item = 'NO ITEM';
             if (itemId != 'NOITEM'){
