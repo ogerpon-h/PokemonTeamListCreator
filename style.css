@@ -148,7 +148,9 @@
       opacity: 0.3;
       transition: opacity 0.2s ease;
   }
-  
+
+  #evs:checked ~ label .option .chroma.evs,
+  #sps:checked ~ label .option .chroma.sps,
   #Junior:checked ~ label .option .chroma.junior,
   #Senior:checked ~ label .option .chroma.senior,
   #Master:checked ~ label .option .chroma.master,
@@ -167,7 +169,9 @@
   #ita:checked ~ label .option .chroma.ita{
       background-color: rgba(5, 6, 45, 0);
   }
-  
+
+  #evs:checked ~ label .option .chroma.evs span,
+  #sps:checked ~ label .option .chroma.sps span,
   #Junior:checked ~ label .option .chroma.junior span,
   #Senior:checked ~ label .option .chroma.senior span,
   #Master:checked ~ label .option .chroma.master span,
@@ -191,6 +195,8 @@
   #close:checked ~ label[for="close"],
   #reg:checked ~ label[for="reg"],
   #sprites:checked ~ label[for="sprites"],
+  #evs:checked ~ label[for="evs"],
+  #sps:checked ~ label[for="sps"],
   #Junior:checked ~ label[for="Junior"],
   #Senior:checked ~ label[for="Senior"],
   #Master:checked ~ label[for="Master"],

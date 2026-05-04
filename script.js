@@ -38,7 +38,6 @@ const button = document.getElementById('print');
 const sheets = document.getElementsByName('sheet');
 
 function getStats(poke, ivs, evs, level, nat) {
-
     var ret = {'hp': 0, 'atk': 0, 'def': 0, 'spa': 0, 'spd': 0, 'spe': 0};
 
     var baseStats = pokedex[poke];
@@ -55,7 +54,24 @@ function getStats(poke, ivs, evs, level, nat) {
     }
 
     return ret
+}
 
+function getStatsSPs(poke, sps, nat) {
+    var ret = {'hp': 0, 'atk': 0, 'def': 0, 'spa': 0, 'spd': 0, 'spe': 0};
+
+    var baseStats = pokedex[poke];
+    var nature = natures[nat];
+
+    for (const [key, value] of Object.entries(baseStats)){
+        if (key === 'hp'){
+            var stat = baseStats[key] + sps[key] + 75;
+        } else {
+            var stat = Math.floor((baseStats[key] + sps[key] + 20) * nature[key]);
+        }
+        ret[key] = stat;
+    }
+
+    return ret
 }
 
 function sheetChange(event) {
@@ -108,6 +124,7 @@ function generatePdf(element) {
     var playerId = document.getElementById('playerId').value;
     var birth = document.getElementById('birth').value;
     var paste = document.getElementById('paste').value;
+    var statSystem = document.querySelector('input[name="stats"]:checked').id;
     var ageDivision = document.querySelector('input[name="ageDivision"]:checked');
     var chosenLang = document.querySelectorAll('input[name="radioLang"]:checked');
 
@@ -130,9 +147,6 @@ function generatePdf(element) {
         document.getElementById('error').innerText = 'NO LANGUAGE SELECTED';
         return
     }
-
-
-
 
     var parsedTeam = Koffing.parse(paste);
 
@@ -288,22 +302,11 @@ function generatePdf(element) {
                 nature = pokes[i].nature;
             }
 
-            var level = 100;
-            if (pokes[i].level){
-                level = pokes[i].level;
-            }
+            var invests = {'hp': 0, 'atk': 0, 'def': 0, 'spa': 0, 'spd': 0, 'spe': 0};
 
-            var ivs = {'hp': 31, 'atk': 31, 'def': 31, 'spa': 31, 'spd': 31, 'spe': 31};
-            if (pokes[i].ivs) {
-                for (const [key, value] of Object.entries(pokes[i].ivs)){
-                    ivs[key] = value;
-                }
-            }
-
-            var evs = {'hp': 0, 'atk': 0, 'def': 0, 'spa': 0, 'spd': 0, 'spe': 0};
             if (pokes[i].evs){
                 for (const [key, value] of Object.entries(pokes[i].evs)){
-                    evs[key] = value;
+                    invests[key] = value;
                 }
             }
 
@@ -369,10 +372,28 @@ function generatePdf(element) {
             
 
             if (sheet == "close") {
-                var stats = getStats(pokes[i].name, ivs, evs, level, nature);
-    
-                doc.text(level.toString(), statX + (i%2) * (gapX-1), levelY + (Math.floor(i/2)) * gapY, 'right');
-    
+                if (statSystem === "sps") {
+                    var stats = getStatsSPs(pokes[i].name, invests, nature);
+                }
+                else {
+                    // Assume stat system is EVs if it's not SPs
+                    var level = 100;
+                    if (pokes[i].level){
+                        level = pokes[i].level;
+                    }
+
+                    var ivs = {'hp': 31, 'atk': 31, 'def': 31, 'spa': 31, 'spd': 31, 'spe': 31};
+                    if (pokes[i].ivs) {
+                        for (const [key, value] of Object.entries(pokes[i].ivs)){
+                            ivs[key] = value;
+                        }
+                    }
+
+                    var stats = getStats(pokes[i].name, ivs, invests, level, nature);
+
+                    doc.text(level.toString(), statX + (i%2) * (gapX-1), levelY + (Math.floor(i/2)) * gapY, 'right');
+                }
+
                 var j = 0;
                 for (const [key, value] of Object.entries(stats)){
                     doc.text(value.toString(), statX + (i%2) * (gapX-1), statY + (Math.floor(i/2)) * gapY + j * statGapY, 'right');
