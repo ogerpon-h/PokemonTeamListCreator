@@ -127,6 +127,7 @@ function generatePdf(element) {
     var statSystem = document.querySelector('input[name="stats"]:checked').id;
     var ageDivision = document.querySelector('input[name="ageDivision"]:checked');
     var chosenLang = document.querySelectorAll('input[name="radioLang"]:checked');
+    var mechanics = Array.from(document.querySelectorAll('input[name="mechanic"]:checked'), (e) => e.id);
 
     for (var sheet of sheets) {
         if (sheet.checked){
@@ -339,12 +340,14 @@ function generatePdf(element) {
             doc.setFont("customFont", 'normal');
             doc.text(name, textX + (i%2) * gapX, pokeY + (Math.floor(i/2)) * gapY);
 
-            doc.setFontSize(13);
-            doc.setFont("text1", 'normal');
-            doc.text("Tera Type", textXX + (i%2) * gapX, teraY + (Math.floor(i/2)) * gapY, "right");
-            doc.setFontSize(11);
-            doc.setFont("customFont", 'normal');
-            doc.text(teraType, textX + (i%2) * gapX, teraY + (Math.floor(i/2)) * gapY);
+            if (mechanics.includes("tera")) {
+                doc.setFontSize(13);
+                doc.setFont("text1", 'normal');
+                doc.text("Tera Type", textXX + (i%2) * gapX, teraY + (Math.floor(i/2)) * gapY, "right");
+                doc.setFontSize(11);
+                doc.setFont("customFont", 'normal');
+                doc.text(teraType, textX + (i%2) * gapX, teraY + (Math.floor(i/2)) * gapY);
+            }
 
             doc.setFontSize(13);
             doc.setFont("text1", 'normal');
@@ -390,7 +393,14 @@ function generatePdf(element) {
 
                     var stats = getStats(pokes[i].name, ivs, invests, level, nature);
 
+                    doc.setFontSize(6);
+                    doc.setFont("text1", 'normal');
+
                     doc.text(87.5 + 99 * (i % 2), 73.5 + 70 * Math.floor(i/2), "Level");
+
+                    doc.setFontSize(11);
+                    doc.setFont("customFont", 'normal');
+
                     doc.text(level.toString(), statX + (i%2) * (gapX-1), levelY + (Math.floor(i/2)) * gapY, 'right');
                 }
 

@@ -13,6 +13,39 @@
     <div id="area1">
         <img src="logo.png" alt="Team List Creator from Showdown paste">
 
+        <div id="stats" class="optionsContainer">
+            <input type="radio" id="evs" name="stats" value="0" checked>
+            <input type="radio" id="sps" name="stats" value="1">
+
+            <label for="evs">
+                    <span class="option">
+                        <span class="chroma evs">
+                            <span>EVs</span>
+                        </span>
+                    </span>
+            </label>
+
+            <label for="sps">
+                    <span class="option">
+                        <span class="chroma sps">
+                            <span>SPs</span>
+                        </span>
+                    </span>
+            </label>
+        </div>
+
+        <div id="mechanics" class="optionsContainer">
+            <input type="checkbox" id="tera" name="mechanic" value="0" checked>
+
+            <label for="tera">
+                    <span class="option cb">
+                        <span class="chroma tera">
+                            <span>Terastallization</span>
+                        </span>
+                    </span>
+            </label>
+        </div>
+
         <textarea id="paste" placeholder="Showdown team paste here =)"></textarea>
 
     </div>
@@ -46,26 +79,7 @@
         </div>
 
         <div class="bot">
-            <div id="stats" class="optionsContainer">
-                <input type="radio" id="evs" name="stats" value="0" checked>
-                <input type="radio" id="sps" name="stats" value="1">
 
-                <label for="evs">
-                    <span class="option">
-                        <span class="chroma evs">
-                            <span>EVs</span>
-                        </span>
-                    </span>
-                </label>
-
-                <label for="sps">
-                    <span class="option">
-                        <span class="chroma sps">
-                            <span>SPs</span>
-                        </span>
-                    </span>
-                </label>
-            </div>
 
             <div id="division" class="optionsContainer">
                 <input type="radio" id="Junior" name="ageDivision" value="0">

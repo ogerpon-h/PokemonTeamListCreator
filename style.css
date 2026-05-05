@@ -151,6 +151,7 @@
 
   #evs:checked ~ label .option .chroma.evs,
   #sps:checked ~ label .option .chroma.sps,
+  #tera:checked ~ label .option .chroma.tera,
   #Junior:checked ~ label .option .chroma.junior,
   #Senior:checked ~ label .option .chroma.senior,
   #Master:checked ~ label .option .chroma.master,
@@ -172,6 +173,7 @@
 
   #evs:checked ~ label .option .chroma.evs span,
   #sps:checked ~ label .option .chroma.sps span,
+  #tera:checked ~ label .option .chroma.tera span,
   #Junior:checked ~ label .option .chroma.junior span,
   #Senior:checked ~ label .option .chroma.senior span,
   #Master:checked ~ label .option .chroma.master span,
@@ -197,6 +199,7 @@
   #sprites:checked ~ label[for="sprites"],
   #evs:checked ~ label[for="evs"],
   #sps:checked ~ label[for="sps"],
+  #tera:checked ~ label[for="tera"],
   #Junior:checked ~ label[for="Junior"],
   #Senior:checked ~ label[for="Senior"],
   #Master:checked ~ label[for="Master"],
