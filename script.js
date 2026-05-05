@@ -766,16 +766,26 @@ function generatePdf(element) {
                     doc.text(window['abilities' + currentLang][id], 22 + c_width * (i+1),
                         ystart + (pokeLineNum++) * ygap + 8 * ygap * u, "center");
                     doc.setFontSize(startFontSize);
+
                     id = ItemTranslator[pokes[i].item];
-                    var itemFontSize=startFontSize;
-                    var itemTextWidth= doc.getStringUnitWidth(window['items' + currentLang][id])*itemFontSize;
+
+                    let item = window['items' + currentLang][id];
+
+                    if (item === undefined) {
+                        item = "NO ITEM";
+                    }
+
+                    var itemFontSize = startFontSize;
+                    var itemTextWidth = doc.getStringUnitWidth(item) * itemFontSize;
                     while (itemTextWidth>limitTextWidth) {
                         itemFontSize-=0.5;
                         doc.setFontSize(itemFontSize);
-                        itemTextWidth= doc.getStringUnitWidth(window['items' + currentLang][id])*itemFontSize;
+                        itemTextWidth = doc.getStringUnitWidth(item) * itemFontSize;
                     }
-                    doc.text(window['items' + currentLang][id], 22 + c_width * (i + 1),
+
+                    doc.text(item, 22 + c_width * (i + 1),
                         ystart + (pokeLineNum++) * ygap + 8 * ygap * u, "center");
+
                     doc.setFontSize(startFontSize);
                     for (let x = 0; x < pokes[i].moves.length; x++){
                         var moveId = MoveTranslator[pokes[i].moves[x]];
