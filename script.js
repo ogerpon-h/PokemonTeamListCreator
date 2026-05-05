@@ -245,16 +245,28 @@ function generatePdf(element) {
         doc.text(teamName, 47, 47);
         doc.text(switchName, 47, 54);
 
+        var mygap = 8;
+
+        var pokeRows = 6;
+        const pokeRectangleX = 95;
+        var yOffset = 0;
+
+        if (mechanics.includes("tera") || statSystem === "evs") {
+            pokeRows++;
+            yOffset += mygap;
+        }
+
+        var pokeRectangleY = 60 + yOffset;
+
         for (let i = 0; i < 6; i++) {
             doc.setLineWidth(0.6);
             var x = 6.5 + 99 * (i%2);
             var y = 59.5 + 70 * Math.floor(i/2);
-            doc.rect(x, y, 95, 68);
+            doc.rect(x, y, pokeRectangleX, pokeRectangleY);
 
             doc.setLineWidth(0.4);
             var startY = 12;
-            var mygap = 8;
-            for (let b = 0; b < 7; b++) {
+            for (let b = 0; b < pokeRows; b++) {
                 doc.line(x, y+startY+mygap*b, x+95, y+startY+mygap*b);
             }
         }
@@ -274,16 +286,18 @@ function generatePdf(element) {
         const textXX = 27.5;
 
         const pokeY = 67;
-        const teraY = pokeY + 9.5;
-        const levelY = pokeY + 9.5;
-        const abilityY = pokeY + 18;
-        const itemY = pokeY + 26;
+        const pokeYOffset = pokeY + yOffset;
+
+        const teraY = pokeYOffset + 1.5;
+        const levelY = pokeYOffset + 1.5;
+        const abilityY = pokeYOffset + 10;
+        const itemY = pokeYOffset + 18;
         const gapY = 70;
 
-        const moveY = pokeY + 34;
+        const moveY = pokeYOffset + 26;
         const moveGapY = 8;
 
-        const statY = pokeY + 19;
+        const statY = pokeYOffset + 11;
         const statGapY = 8;
 
         var pokes = parsedTeam.teams[0].pokemon;
@@ -357,8 +371,6 @@ function generatePdf(element) {
             doc.setFontSize(12);
             doc.setFont("customFont", 'normal');
             doc.text(name, textX + (i%2) * gapX, pokeY + (Math.floor(i/2)) * gapY);
-
-
 
             doc.setFontSize(13);
             doc.setFont("text1", 'normal');
@@ -483,15 +495,15 @@ function generatePdf(element) {
             var x = 6.5 + 99 * (i%2);
             var y = 59.5 + 70 * Math.floor(i/2);
 
-            doc.line(x+80, y+12, x+80, y+68);
+            doc.line(x+80, y+12, x+80, y+pokeRectangleY);
             doc.setFontSize(6);
             doc.setFont("text1", 'normal');
-            doc.text(x+81, y+22, "HP");
-            doc.text(x+81, y+30, "Atk");
-            doc.text(x+81, y+38, "Def");
-            doc.text(x+81, y+46, "Sp. Atk");
-            doc.text(x+81, y+54, "Sp. Def");
-            doc.text(x+81, y+62, "Speed");
+            doc.text(x+81, y+14+yOffset, "HP");
+            doc.text(x+81, y+22+yOffset, "Atk");
+            doc.text(x+81, y+30+yOffset, "Def");
+            doc.text(x+81, y+38+yOffset, "Sp. Atk");
+            doc.text(x+81, y+46+yOffset, "Sp. Def");
+            doc.text(x+81, y+54+yOffset, "Speed");
         }
 
         doc.setFontSize(11);
