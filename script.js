@@ -267,31 +267,53 @@ function generatePdf(element) {
             doc.line(posX+6, 29, posX, 35);
         }
 
+
+        const textX = 35;
+        const statX = 100;
+        const gapX = 100;
+        const textXX = 27.5;
+
+        const pokeY = 67;
+        const teraY = pokeY + 9.5;
+        const levelY = pokeY + 9.5;
+        const abilityY = pokeY + 18;
+        const itemY = pokeY + 26;
+        const gapY = 70;
+
+        const moveY = pokeY + 34;
+        const moveGapY = 8;
+
+        const statY = pokeY + 19;
+        const statGapY = 8;
+
         var pokes = parsedTeam.teams[0].pokemon;
+
+        // tera is handled separately since it's optional
+        if (mechanics.includes("tera")) {
+            for (let i = 0; i < pokes.length; i++) {
+                var teraTypeId = TypeTranslator[pokes[i].teraType];
+
+                var teraType = window['types' + chosenLang][teraTypeId];
+
+                if (teraType == undefined)
+                {
+                    teraType = "None";
+                }
+
+                doc.setFontSize(13);
+                doc.setFont("text1", 'normal');
+                doc.text("Tera Type", textXX + (i%2) * gapX, teraY + (Math.floor(i/2)) * gapY, "right");
+
+                doc.setFontSize(11);
+                doc.setFont("customFont", 'normal');
+                doc.text(teraType, textX + (i%2) * gapX, teraY + (Math.floor(i/2)) * gapY);
+            }
+        }
 
         for (let i = 0; i < pokes.length; i++) {
 
-            var textX = 35;
-            var statX = 100;
-            var gapX = 100;
-            var textXX = 27.5;
-
-            var pokeY = 67;
-            var teraY = pokeY + 9.5;
-            var levelY = pokeY + 9.5;
-            var abilityY = pokeY + 18;
-            var itemY = pokeY + 26;
-            var gapY = 70;
-
-            var moveY = pokeY + 34;
-            var moveGapY = 8;
-
-            var statY = pokeY + 19;
-            var statGapY = 8;
-
             var nameId = PokeTranslator[pokes[i].name];
             var abilityId = AbilityTranslator[pokes[i].ability];
-            var teraTypeId = TypeTranslator[pokes[i].teraType];
 
             var itemId = 'NOITEM';
             if (pokes[i].item){
@@ -317,11 +339,7 @@ function generatePdf(element) {
             }
 
             var name = window['pokes' + chosenLang][nameId];
-            var teraType = window['types' + chosenLang][teraTypeId];
-            if (teraType == undefined)
-            {
-                teraType = "None";
-            }
+
             var ability = window['abilities' + chosenLang][abilityId];
             var item = 'NO ITEM';
             if (itemId != 'NOITEM'){
@@ -340,14 +358,7 @@ function generatePdf(element) {
             doc.setFont("customFont", 'normal');
             doc.text(name, textX + (i%2) * gapX, pokeY + (Math.floor(i/2)) * gapY);
 
-            if (mechanics.includes("tera")) {
-                doc.setFontSize(13);
-                doc.setFont("text1", 'normal');
-                doc.text("Tera Type", textXX + (i%2) * gapX, teraY + (Math.floor(i/2)) * gapY, "right");
-                doc.setFontSize(11);
-                doc.setFont("customFont", 'normal');
-                doc.text(teraType, textX + (i%2) * gapX, teraY + (Math.floor(i/2)) * gapY);
-            }
+
 
             doc.setFontSize(13);
             doc.setFont("text1", 'normal');
@@ -382,7 +393,6 @@ function generatePdf(element) {
                     if (pokes[i].level){
                         level = pokes[i].level;
                     }
-
 
                     var ivs = {'hp': 31, 'atk': 31, 'def': 31, 'spa': 31, 'spd': 31, 'spe': 31};
                     if (pokes[i].ivs) {
