@@ -369,8 +369,6 @@ function generatePdf(element) {
                 doc.text(movs[j], textX + (i%2) * gapX, moveY + (Math.floor(i/2)) * gapY + j * moveGapY);
             }
             
-            
-
             if (sheet == "close") {
                 if (statSystem === "sps") {
                     var stats = getStatsSPs(pokes[i].name, invests, nature);
@@ -382,6 +380,7 @@ function generatePdf(element) {
                         level = pokes[i].level;
                     }
 
+
                     var ivs = {'hp': 31, 'atk': 31, 'def': 31, 'spa': 31, 'spd': 31, 'spe': 31};
                     if (pokes[i].ivs) {
                         for (const [key, value] of Object.entries(pokes[i].ivs)){
@@ -391,6 +390,7 @@ function generatePdf(element) {
 
                     var stats = getStats(pokes[i].name, ivs, invests, level, nature);
 
+                    doc.text(87.5 + 99 * (i % 2), 73.5 + 70 * Math.floor(i/2), "Level");
                     doc.text(level.toString(), statX + (i%2) * (gapX-1), levelY + (Math.floor(i/2)) * gapY, 'right');
                 }
 
@@ -466,7 +466,6 @@ function generatePdf(element) {
             doc.line(x+80, y+12, x+80, y+68);
             doc.setFontSize(6);
             doc.setFont("text1", 'normal');
-            doc.text(x+81, y+14, "Level");
             doc.text(x+81, y+22, "HP");
             doc.text(x+81, y+30, "Atk");
             doc.text(x+81, y+38, "Def");
