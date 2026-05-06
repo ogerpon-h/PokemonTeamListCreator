@@ -776,10 +776,14 @@ function generatePdf(element) {
 
                     id = ItemTranslator[pokes[i].item];
 
-                    let item = window['items' + currentLang][id];
+                    let item = "NO ITEM";
 
-                    if (item === undefined) {
-                        item = "NO ITEM";
+                    if (pokes[i].item) {
+                        item = window['items' + currentLang][id];
+
+                        if (item === undefined) {
+                            item = "UNKNOWN ITEM";
+                        }
                     }
 
                     var itemFontSize = startFontSize;
