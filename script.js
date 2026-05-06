@@ -250,11 +250,63 @@ function generatePdf(element) {
         var pokeRows = 6;
         const pokeRectangleX = 95;
         var yOffset = 0;
+        var levelOffset = 0;
 
-        if (mechanics.includes("tera") || statSystem === "evs") {
+        const textX = 35;
+        const statX = 100;
+        const gapX = 100;
+        const textXX = 27.5;
+
+        const pokeY = 67;
+        const gapY = 70;
+        const moveGapY = 8;
+        const statGapY = 8;
+
+        var pokes = parsedTeam.teams[0].pokemon;
+
+        // tera is handled separately since it's optional
+        if (mechanics.includes("tera")) {
+            pokeRows++;
+            yOffset += mygap;
+
+            const teraY = pokeY + yOffset + 1.5;
+
+            if (statSystem !== "evs") {
+                levelOffset += mygap;
+            }
+
+            for (let i = 0; i < pokes.length; i++) {
+                var teraTypeId = TypeTranslator[pokes[i].teraType];
+
+                var teraType = window['types' + chosenLang][teraTypeId];
+
+                if (teraType == undefined)
+                {
+                    teraType = "None";
+                }
+
+                doc.setFontSize(13);
+                doc.setFont("text1", 'normal');
+                doc.text("Tera Type", textXX + (i%2) * gapX, teraY + (Math.floor(i/2)) * gapY, "right");
+
+                doc.setFontSize(11);
+                doc.setFont("customFont", 'normal');
+                doc.text(teraType, textX + (i%2) * gapX, teraY + (Math.floor(i/2)) * gapY);
+            }
+        } else if (statSystem === "evs") {
             pokeRows++;
             yOffset += mygap;
         }
+
+        const pokeYOffset = pokeY + yOffset;
+
+        const levelY = pokeYOffset + 1.5;
+        const abilityY = pokeYOffset + 10;
+        const itemY = pokeYOffset + 18;
+
+        const moveY = pokeYOffset + 26;
+
+        const statY = pokeYOffset + 11;
 
         var pokeRectangleY = 60 + yOffset;
 
@@ -277,51 +329,6 @@ function generatePdf(element) {
             var posX = 154 + 21 * ageDivision;
             doc.line(posX, 29, posX+6, 35);
             doc.line(posX+6, 29, posX, 35);
-        }
-
-
-        const textX = 35;
-        const statX = 100;
-        const gapX = 100;
-        const textXX = 27.5;
-
-        const pokeY = 67;
-        const pokeYOffset = pokeY + yOffset;
-
-        const teraY = pokeYOffset + 1.5;
-        const levelY = pokeYOffset + 1.5;
-        const abilityY = pokeYOffset + 10;
-        const itemY = pokeYOffset + 18;
-        const gapY = 70;
-
-        const moveY = pokeYOffset + 26;
-        const moveGapY = 8;
-
-        const statY = pokeYOffset + 11;
-        const statGapY = 8;
-
-        var pokes = parsedTeam.teams[0].pokemon;
-
-        // tera is handled separately since it's optional
-        if (mechanics.includes("tera")) {
-            for (let i = 0; i < pokes.length; i++) {
-                var teraTypeId = TypeTranslator[pokes[i].teraType];
-
-                var teraType = window['types' + chosenLang][teraTypeId];
-
-                if (teraType == undefined)
-                {
-                    teraType = "None";
-                }
-
-                doc.setFontSize(13);
-                doc.setFont("text1", 'normal');
-                doc.text("Tera Type", textXX + (i%2) * gapX, teraY + (Math.floor(i/2)) * gapY, "right");
-
-                doc.setFontSize(11);
-                doc.setFont("customFont", 'normal');
-                doc.text(teraType, textX + (i%2) * gapX, teraY + (Math.floor(i/2)) * gapY);
-            }
         }
 
         for (let i = 0; i < pokes.length; i++) {
@@ -495,7 +502,7 @@ function generatePdf(element) {
             var x = 6.5 + 99 * (i%2);
             var y = 59.5 + 70 * Math.floor(i/2);
 
-            doc.line(x+80, y+12, x+80, y+pokeRectangleY);
+            doc.line(x+80, y+12+levelOffset, x+80, y+pokeRectangleY);
             doc.setFontSize(6);
             doc.setFont("text1", 'normal');
             doc.text(x+81, y+14+yOffset, "HP");
